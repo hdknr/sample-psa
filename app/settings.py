@@ -86,16 +86,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',     # NOQA
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',       # NOQA
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',      # NOQA
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',     # NOQA
     },
 ]
 
@@ -121,6 +121,7 @@ STATIC_URL = '/static/'
 #
 # CUSTOM
 ###
+from django.conf import global_settings
 LANGUAGE_CODE = 'ja'
 TIME_ZONE = 'Asia/Tokyo'
 
@@ -130,11 +131,10 @@ BOWER_INSTALLED_APPS = [
     'jquery',
     'bootstrap',
 ]
-from django.conf import global_settings
 STATICFILES_FINDERS = global_settings.STATICFILES_FINDERS + [
     'djangobower.finders.BowerFinder',
 ]
 INSTALLED_APPS += [
-    'djangobower',      # django-bower
+    'djangobower',                          # django-bower
 ]
 ALLOWED_HOSTS += ['devserver', ]
