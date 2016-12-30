@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load bootstrap3 i18n static %}
+{% block title %}{% trans 'Profile' %}{% endblock %}
+
+{% block contents %}
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="auth-container">
+        {{ user }}
+        <a class="btn btn-danger"
+          href="{% url 'accounts_logout' %}?next={% url 'accounts_profile_index' %}">
+            {% trans 'Sign Out'%}</a>
+    </div>
+
+  </div>
+  <div class="col-md-3">
+  </div>
+</div>
+{% endblock %}

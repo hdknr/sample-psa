@@ -136,7 +136,9 @@ STATICFILES_FINDERS = global_settings.STATICFILES_FINDERS + [
 ]
 INSTALLED_APPS += [
     'djangobower',                          # django-bower
+    'bootstrap3',                           # django-bootstrap3
     'corekit',                              # django-corekit
     'accounts',                             # accounts
 ]
 ALLOWED_HOSTS += ['devserver', ]
+
