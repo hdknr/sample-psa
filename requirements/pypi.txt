@@ -1,0 +1,12 @@
+# Framework
+django
+pytz
+
+# Authentication
+# https://github.com/python-social-auth/social-app-django 
+social-auth-app-django
+
+# UI
+bambu-bootstrap
+django-bootstrap3
+django-bower

@@ -1,0 +1,21 @@
+*.log
+*.pyc
+*.swp
+*.retry
+*~
+.*~
+.DS_Store
+.ropeproject
+.svn
+*.sqlite3
+
+# django projects
+static
+media
+components
+docs/build
+logs
+archives
+migrations
+node_modules
+app/local_settings.py
