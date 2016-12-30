@@ -118,3 +118,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+#
+# CUSTOM
+###
+LANGUAGE_CODE = 'ja'
+TIME_ZONE = 'Asia/Tokyo'
+
+# BOWER
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components/')
+BOWER_INSTALLED_APPS = [
+    'jquery',
+    'bootstrap',
+]
+from django.conf import global_settings
+STATICFILES_FINDERS = global_settings.STATICFILES_FINDERS + [
+    'djangobower.finders.BowerFinder',
+]
+INSTALLED_APPS += [
+    'djangobower',      # django-bower
+]
+ALLOWED_HOSTS += ['devserver', ]
