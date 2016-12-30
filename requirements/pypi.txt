@@ -10,3 +10,6 @@ social-auth-app-django
 bambu-bootstrap
 django-bootstrap3
 django-bower
+
+# Management Commands
+django-click
