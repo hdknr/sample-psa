@@ -19,3 +19,5 @@ archives
 migrations
 node_modules
 app/local_settings.py
+app/psa.py
+

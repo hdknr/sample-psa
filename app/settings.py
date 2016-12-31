@@ -140,5 +140,18 @@ INSTALLED_APPS += [
     'corekit',                              # django-corekit
     'accounts',                             # accounts
 ]
-ALLOWED_HOSTS += ['devserver', ]
+ALLOWED_HOSTS += ['develop.local', ]
 
+# PSA
+# http://python-social-auth.readthedocs.io/en/latest/configuration/django.html
+INSTALLED_APPS += ['social.apps.django_app.default', ]
+AUTHENTICATION_BACKENDS = [
+    'social.backends.facebook.FacebookOAuth2',
+] + global_settings.AUTHENTICATION_BACKENDS
+TEMPLATES[0]['OPTIONS']['context_processors'] += [
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
+]
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
+from app.psa import *       # NOQA Facebook
