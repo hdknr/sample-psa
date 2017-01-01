@@ -4,17 +4,35 @@
 
 {% block contents %}
 <div class="row">
-
   <div class="col-md-6">
     <div class="auth-container">
+      <a class="btn btn-lg btn-primary btn-block btn-facebook" href="#">
         {{ user }}
-        <a class="btn btn-danger"
-          href="{% url 'accounts_logout' %}?next={% url 'accounts_profile_index' %}">
-            {% trans 'Sign Out'%}</a>
+      </a>
     </div>
 
   </div>
-  <div class="col-md-3">
-  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="auth-container">
+      <a class="btn btn-lg btn-danger btn-block btn-facebook"
+          href="{% url 'accounts_logout' %}?next={% url 'accounts_profile_index' %}">
+            {% trans 'Sign Out'%}</a>
+    </div>
+</div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="auth-container">
+      <a class="btn btn-lg btn-warning btn-block btn-facebook"
+        href="{% url 'social:begin' backend='facebook'  %}?{{ request.GET.urlencode }}">
+        <i class="fa fa-facebook-official" aria-hidden="true"></i>
+        {% trans 'Facebook Connect' %} </a>
+
+    </div>
+</div>
 </div>
 {% endblock %}

@@ -152,6 +152,10 @@ TEMPLATES[0]['OPTIONS']['context_processors'] += [
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
 ]
+MIDDLEWARE += [
+    'accounts.middleware.AccountMiddleware',
+]
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 from app.psa import *       # NOQA Facebook

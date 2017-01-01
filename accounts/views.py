@@ -16,8 +16,9 @@ class AuthView(core_views.View):
     @core_views.handler(
         url=r'^login/error',
         name="accounts_login_error", order=20,)
-    def error(self, request):
-        return self.render('accounts/auth/login.error.html')
+    def error(self, request, ex=None):
+        return self.render(
+            'accounts/auth/login.error.html', ex=ex)
 
     @core_views.handler(
         url=r'^login',
