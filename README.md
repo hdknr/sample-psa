@@ -27,12 +27,12 @@ Out[2]: [u'django.contrib.auth.backends.ModelBackend']
 
 ~~~py
 AUTHENTICATION_BACKENDS = [
-    'social.backends.facebook.FacebookOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
 ] + global_settings.AUTHENTICATION_BACKENDS
 
 TEMPLATES[0]['OPTIONS']['context_processors'] += [
-    'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect',
+    'social_django.context_processors.backends',
+    'social_django.context_processors.login_redirect',
 ]
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
@@ -62,7 +62,7 @@ from . import views
 # auth request: /accounts/social/login/facebook/?next=%2Faccounts%2Fprofile
 # auth response: /accounts/social/complete/facebook/?redirect_state={{ state }}&code={{ oauth code}}&state={{ oauth state }}
 urlpatterns = [
-    url('^social/', include('social.apps.django_app.urls', namespace='social')),
+    url('^social/', include('social_django.urls', namespace='social')),
 ] + views.AuthView.urls() + views.ProfileView.urls()
 ~~~
 
@@ -87,7 +87,7 @@ MIDDLEWARE += [
 - accounts/middleware.py
 
 ~~~py
-from social.apps.django_app.middleware import SocialAuthExceptionMiddleware
+from social_django.middleware import SocialAuthExceptionMiddleware
 
 
 class AccountMiddleware(SocialAuthExceptionMiddleware):
