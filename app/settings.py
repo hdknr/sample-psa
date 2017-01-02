@@ -144,13 +144,13 @@ ALLOWED_HOSTS += ['develop.local', ]
 
 # PSA
 # http://python-social-auth.readthedocs.io/en/latest/configuration/django.html
-INSTALLED_APPS += ['social.apps.django_app.default', ]
+INSTALLED_APPS += ['social_django', ]
 AUTHENTICATION_BACKENDS = [
-    'social.backends.facebook.FacebookOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
 ] + global_settings.AUTHENTICATION_BACKENDS
 TEMPLATES[0]['OPTIONS']['context_processors'] += [
-    'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect',
+    'social_django.context_processors.backends',
+    'social_django.context_processors.login_redirect',
 ]
 MIDDLEWARE += [
     'accounts.middleware.AccountMiddleware',
