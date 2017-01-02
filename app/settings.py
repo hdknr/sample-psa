@@ -158,4 +158,5 @@ MIDDLEWARE += [
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+SOCIAL_AUTH_STRATEGY = 'accounts.strategy.Strategy'
 from app.psa import *       # NOQA Facebook
