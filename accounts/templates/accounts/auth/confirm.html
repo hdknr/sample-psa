@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load bootstrap3 i18n static %}
+{% block title %}{% trans 'Login' %}{% endblock %}
+
+{% block contents %}
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="auth-container">
+      <form method="post" class="form-horizontal"
+        action="{% url 'accounts_confirm' backend=backend  %}">{% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+        <button type="submit" class="btn btn-lg btn-warning btn-block">Agree</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

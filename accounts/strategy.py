@@ -1,5 +1,6 @@
 # coding: utf-8
 from social_django.strategy import DjangoStrategy
+from corekit.views import View
 
 
 class Strategy(DjangoStrategy):
@@ -9,4 +10,8 @@ class Strategy(DjangoStrategy):
             'social_core.pipeline.user.create_user': 'accounts.pipeline.create_user',   # NOQA
         }
         res = super(Strategy, self).get_pipeline(backend=backend)
-        return (replace.get(i, i) for i in res)
+        return tuple(replace.get(i, i) for i in res) + (
+            'accounts.pipeline.confirm', )
+
+    def redirect(self, url, *args, **kwargs):
+        return View.redirect(url, *args, **kwargs)

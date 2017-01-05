@@ -6,6 +6,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.csrf import csrf_protect
 
 from corekit import views as core_views
+from .forms import AuthConfirmForm
 
 from logging import getLogger
 logger = getLogger()
@@ -34,6 +35,19 @@ class AuthView(core_views.View):
         decorators=[auth_views.deprecate_current_app])
     def logout(self, request, *args, **kwargs):
         return auth_views.logout(request, *args, **kwargs)
+
+    @core_views.handler(
+        url=r'^confirm/(?P<backend>.+)',
+        name="accounts_confirm", order=40,
+        decorators=[auth_views.deprecate_current_app])
+    def confirm(self, request, backend):
+        request.session['agreed'] = False
+        form = AuthConfirmForm(request.POST or None)
+        if form.is_valid():
+            request.session['agreed'] = True
+            return self.redirect('social:complete', backend=backend,)
+        return self.render(
+            'accounts/auth/confirm.html', backend=backend, form=form)
 
 
 class ProfileView(core_views.View):
