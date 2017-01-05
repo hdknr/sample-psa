@@ -11,7 +11,7 @@ Python Social Auth Sample
 
 ## Django default settings.AUTHENTICATION_BACKENDS
 
-- django default(1.10.4):
+django default(1.10.4):
 
 ~~~py
 In [1]: from django.conf import global_settings
@@ -23,7 +23,7 @@ Out[2]: [u'django.contrib.auth.backends.ModelBackend']
 
 ## Facebook
 
-- settings.py
+settings.py:
 
 ~~~py
 AUTHENTICATION_BACKENDS = [
@@ -39,7 +39,7 @@ SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 from app.psa import *       # NOQA Facebook
 ~~~
 
-- psa.py
+psa.py:
 
 ~~~py
 # Facebook
@@ -52,7 +52,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 }
 ~~~
 
-- accounts/urls.py
+accounts/urls.py:
 
 ~~~py
 # -*- coding: utf-8 -*-
@@ -66,7 +66,7 @@ urlpatterns = [
 ] + views.AuthView.urls() + views.ProfileView.urls()
 ~~~
 
-- accounts/templates/accounts/auth/login.html
+accounts/templates/accounts/auth/login.html:
 
 ~~~html
 <a href="{% url 'social:begin' backend='facebook'  %}?{{ request.GET.urlencode }}">
@@ -76,7 +76,7 @@ urlpatterns = [
 
 ## Exception
 
-- settings.py
+settings.py:
 
 ~~~py
 MIDDLEWARE += [
@@ -84,7 +84,7 @@ MIDDLEWARE += [
 ]
 ~~~
 
-- accounts/middleware.py
+accounts/middleware.py:
 
 ~~~py
 from social_django.middleware import SocialAuthExceptionMiddleware
@@ -104,3 +104,84 @@ class AccountMiddleware(SocialAuthExceptionMiddleware):
         return super(AccountMiddleware, self).process_exception(
             request, exception) or AuthView(request).error(request, exception)
 ~~~
+
+# Partial pipeline for UI interaction.
+
+customized strategy for Django:
+
+- replacing `create_user`
+- append `confirm` for UI interaction
+
+~~~py
+from social_django.strategy import DjangoStrategy
+from corekit.views import View
+
+
+class Strategy(DjangoStrategy):
+
+    def get_pipeline(self, backend=None):
+        ''' override to modify piplines'''
+        replace = {
+            'social_core.pipeline.user.create_user': 'accounts.pipeline.create_user',   # NOQA
+        }
+        res = super(Strategy, self).get_pipeline(backend=backend)
+        return tuple(replace.get(i, i) for i in res) + (
+            'accounts.pipeline.confirm', )
+~~~
+
+settings.py:
+
+~~~py
+SOCIAL_AUTH_STRATEGY = 'accounts.strategy.Strategy'
+~~~
+
+accounts/pipeline.py:
+
+~~~py
+# coding: utf-8
+from social_core.pipeline.user import create_user as psa_create_user
+from social_core.pipeline.partial import partial
+
+
+def create_user(strategy, details, backend, user=None, username=None,
+                *args, **kwargs):
+
+    # duplicated email are banned.
+    if not user and username and username != details.get('email', None):
+        raise Exception('Email user already exists')
+
+    return psa_create_user(
+        strategy, details, backend=backend, user=user,
+        username=username, *args, **kwargs)
+
+
+@partial
+def confirm(strategy, details, backend, user=None, username=None,
+            pipeline_index=None, *args, **kwargs):
+
+    from accounts.views import AuthView
+    if not strategy.session_get('agreed'):
+        # if not agreed by the User, UI is provided.
+        return AuthView(strategy.request).confirm(
+            strategy.request, backend=backend.name)
+~~~            
+
+accounts/views.py:
+
+~~~py
+class AuthView(core_views.View):
+
+    @core_views.handler(
+        url=r'^confirm/(?P<backend>.+)',
+        name="accounts_confirm", order=40,
+        decorators=[auth_views.deprecate_current_app])
+    def confirm(self, request, backend):
+        request.session['agreed'] = False
+        form = AuthConfirmForm(request.POST or None)
+        if form.is_valid():
+            # Agreed by User, back to the pipeline.
+            request.session['agreed'] = True
+            return self.redirect('social:complete', backend=backend,)
+        return self.render(
+            'accounts/auth/confirm.html', backend=backend, form=form)
+~~~            
