@@ -16,7 +16,8 @@ class ShopOAuth2(BaseOAuth2):
     # user_data converter
     EXTRA_DATA = [
         ('user_id', 'id'),
-        ('expires_in', 'expires')
+        ('expires_in', 'expires'),
+        ('endpoint_name', 'endpoint_name'),
     ]
 
     ACCESS_TOKEN_METHOD = 'POST'
