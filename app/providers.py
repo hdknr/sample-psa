@@ -30,7 +30,9 @@ class ShopOAuth2(BaseOAuth2):
 
     def user_data(self, access_token, *args, **kwargs):
         # OAuth2 Resource Endpoint
-        headers = {'Authorization': 'Bearer {0}'.format(access_token), }
-        url = self.USER_URL
-        response = self.get_json(url, headers=headers)
+        return self.call(self.USER_URL, access_token, *args, **kwargs)
+
+    def call(self, endpoint, access_token, headers={}, *args, **kwargs):
+        headers['Authorization'] = 'Bearer {0}'.format(access_token)
+        response = self.get_json(endpoint, headers=headers)
         return response
