@@ -238,6 +238,18 @@ AUTHENTICATION_BACKENDS = [
 ] + global_settings.AUTHENTICATION_BACKENDS
 ~~~
 
+shop conf:
+
+~~~py
+# SHOP
+SOCIAL_AUTH_SHOP_KEY = "Df73U5JJvlxS1cRHr6NQKuw76M3W0SDh5gvlvqHG"
+SOCIAL_AUTH_SHOP_SECRET = "jxhfVXRb4HVeoY0CwSoPeqgwaNMJbVzVuf8uaSE7i95Np2ofXPifElid5aG55UbqdONUqX9Qef7dNRbZAKuQmriryubzIpM9UmZbTOSNIQOHMGDOu9F1guwWNgK9PYhf"  # NOQA
+# SOCIAL_AUTH_SHOP_SCOPE = ['email']
+SOCIAL_AUTH_SHOP_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email',
+}
+~~~
+
 login template:
 
 ~~~html
