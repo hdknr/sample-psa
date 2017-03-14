@@ -147,6 +147,7 @@ ALLOWED_HOSTS += ['develop.local', ]
 INSTALLED_APPS += ['social_django', ]
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
+    'app.providers.ShopOAuth2',
 ] + global_settings.AUTHENTICATION_BACKENDS
 TEMPLATES[0]['OPTIONS']['context_processors'] += [
     'social_django.context_processors.backends',

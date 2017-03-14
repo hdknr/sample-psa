@@ -1,4 +1,5 @@
 # sample-psa
+
 Python Social Auth Sample
 
 ## social-app-django
@@ -42,8 +43,10 @@ from app.psa import *       # NOQA Facebook
 psa.py:
 
 ~~~py
-# Facebook
-# http://python-social-auth.readthedocs.io/en/latest/backends/facebook.html#oauth2
+'''
+Facebook
+http://python-social-auth.readthedocs.io/en/latest/backends/facebook.html#oauth2
+'''
 SOCIAL_AUTH_FACEBOOK_KEY = "{{ set key }}"
 SOCIAL_AUTH_FACEBOOK_SECRET = "{{ set secret }}"
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
@@ -55,12 +58,13 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 accounts/urls.py:
 
 ~~~py
-# -*- coding: utf-8 -*-
 from django.conf.urls import url, include
 from . import views
 
-# auth request: /accounts/social/login/facebook/?next=%2Faccounts%2Fprofile
-# auth response: /accounts/social/complete/facebook/?redirect_state={{ state }}&code={{ oauth code}}&state={{ oauth state }}
+'''
+auth request: /accounts/social/login/facebook/?next=%2Faccounts%2Fprofile
+auth response: /accounts/social/complete/facebook/?redirect_state={{ state }}&code={{ oauth code}}&state={{ oauth state }}
+'''
 urlpatterns = [
     url('^social/', include('social_django.urls', namespace='social')),
 ] + views.AuthView.urls() + views.ProfileView.urls()
@@ -138,7 +142,6 @@ SOCIAL_AUTH_STRATEGY = 'accounts.strategy.Strategy'
 accounts/pipeline.py:
 
 ~~~py
-# coding: utf-8
 from social_core.pipeline.user import create_user as psa_create_user
 from social_core.pipeline.partial import partial
 
@@ -185,3 +188,33 @@ class AuthView(core_views.View):
         return self.render(
             'accounts/auth/confirm.html', backend=backend, form=form)
 ~~~            
+
+# Custom OAuth2 Provider
+
+define `social_core.backends.oauth.BaseOAuth2` backend class:
+
+~~~py
+from social_core.backends.oauth import BaseOAuth2
+
+
+class ShopOAuth2(BaseOAuth2):
+    ...
+~~~
+
+add the backend to `AUTHENTICATION_BACKENDS`
+
+~~~py
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.facebook.FacebookOAuth2',
+    'app.providers.ShopOAuth2',
+] + global_settings.AUTHENTICATION_BACKENDS
+~~~
+
+login template:
+
+~~~html
+<a href="{% url 'social:begin' backend='shop'  %}?{{ request.GET.urlencode }}">
+    {% trans 'Shop Login' %} 
+</a>
+~~~
+

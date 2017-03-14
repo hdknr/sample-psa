@@ -20,6 +20,11 @@
         <i class="fa fa-facebook-official" aria-hidden="true"></i>
         {% trans 'Facebook Login' %} </a>
 
+      <a class="btn btn-lg btn-warning btn-block btn-shop"
+        href="{% url 'social:begin' backend='shop'  %}?{{ request.GET.urlencode }}">
+        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        {% trans 'Shop Login' %} </a>
+
     </div>
   </div>
   <div class="col-md-3">
