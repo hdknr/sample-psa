@@ -9,8 +9,8 @@ from social_core.backends.oauth import BaseOAuth2
 class ShopOAuth2(BaseOAuth2):
     '''Shop OAuth authentication backend'''
     name = 'shop'
-    AUTHORIZATION_URL = 'http://shop.local:8000/o/authorize/'
-    ACCESS_TOKEN_URL = 'http://shop.local:8000/o/token/'
+    AUTHORIZATION_URL = 'http://shop.local:8000/accounts/o/authorize/'
+    ACCESS_TOKEN_URL = 'http://shop.local:8000/accounts/o/token/'
     SCOPE_SEPARATOR = ','
 
     # user_data converter
@@ -20,7 +20,7 @@ class ShopOAuth2(BaseOAuth2):
     ]
 
     ACCESS_TOKEN_METHOD = 'POST'
-    USER_URL = 'http://shop.local:8000/api/profile/'
+    USER_URL = 'http://shop.local:8000/accounts/api/profile/'
     ID_KEY = 'user_id'          # Ship User key
 
     def get_user_details(self, response):
